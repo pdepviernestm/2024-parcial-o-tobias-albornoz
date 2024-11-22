@@ -25,14 +25,14 @@ describe "Tests Punto 6" {
     
     grupo.vivirEvento(evento)
 
-    const tobias = grupo.integrantes().first()
-    const jeremias = grupo.integrantes().first()
+    const tobias = grupo.integrantes().get(0)
+    const jeremias = grupo.integrantes().get(1)
 
     const tritezaTobias = tobias.emociones().first()
     const alegriaJeremias = jeremias.emociones().first()
     
     assert.equals(70, tritezaTobias.intensidad()) 
 
-    assert.equals(70, alegriaJeremias.intensidad()) 
+    assert.equals(90, alegriaJeremias.intensidad()) 
   }
 }

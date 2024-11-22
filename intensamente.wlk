@@ -8,9 +8,9 @@ object global {
 class Persona{
   const edad
   const emociones = []
-  method esAdolecente() = edad > 12 && edad <19
-
   method emociones() = emociones
+
+  method esAdolecente() = edad > 12 && edad < 19
 
   method agregarEmocion(emocion) {
     emociones.add(emocion)
@@ -21,6 +21,11 @@ class Persona{
   }
 
   method vivirEvento(evento) {
+    if(emociones.isEmpty()){
+      throw new DomainException(message= 
+        "No puede vivir el evento porque no tiene emociones")
+    }
+
     emociones.forEach({ emocion=>
       emocion.vivioEvento()
       if(emocion.puedeLiberarse()){
@@ -68,6 +73,7 @@ class Evento {
 class Emocion {
   var property intensidad
   var eventosVividos = 0
+
   method cuantosEventosExperimento() = eventosVividos
   method vivioEvento() {
     eventosVividos += 1
@@ -93,7 +99,8 @@ class Furia inherits Emocion (intensidad = 100){
      palabrotas.add(palabrota)
 
   method olvidarPrimerPalabrota() {
-    
+    const primerPalabrota = palabrotas.get(0)
+    palabrotas.remove(primerPalabrota)
   }
 
   override method puedeLiberarse() =
@@ -112,7 +119,8 @@ class Alegria inherits Emocion{
     super() && (eventosVividos % 2 == 0)
 
   override method disminuirIntensidad(cant) {
-    super(cant).abs()
+    super(cant)
+    intensidad.abs()
   }
 }
 
@@ -151,5 +159,5 @@ class Ansiedad inherits Emocion {
 
 /*
 La herencia nos permitio modelar caracteristicas comunes de las emociones por ejemplo la intencidad y la cantidad de eventos vividios evitando asi la repeticion de codigo
-El polimorfismo nos permitio implentar la logica especifica para cada emocion sin tener que alterar otras partes del codigo ya que sigen entendiendo los mismos mensaje pero comportandose de manera distinta cada uno
+El polimorfismo nos permitio implentar la logica especifica para cada emocion sin tener que alterar otras partes del codigo ya que sigen entendiendo los mismos mensaje pero comportandose de distinta manera cada uno
 */
