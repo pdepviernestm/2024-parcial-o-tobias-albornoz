@@ -94,5 +94,17 @@ class Alegria inherits Emocion{
 }
 
 class Tristeza inherits Emocion{
+  var causa = "melancolia"
+
+
+  override method puedeLiberarse() =
+    intensidad > global.intensidadElevada 
+     && causa != "melancolia"
+     
+
+  override  method liberar(evento) {
+    self.disminuirIntensidad(evento.impacto())
+    causa = evento.descripcion() 
+  }
 
 }
