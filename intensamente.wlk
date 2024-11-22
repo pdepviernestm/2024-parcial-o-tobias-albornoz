@@ -50,7 +50,9 @@ class Emocion {
   }
 
   method puedeLiberarse() 
-  method liberar(evento) 
+  method liberar(evento) {
+    self.disminuirIntensidad(evento.impacto())
+  }
 
   method disminuirIntensidad(cant) {
     intensidad -= cant
@@ -73,7 +75,7 @@ class Furia inherits Emocion (intensidad = 100){
   }
 
   override method liberar(evento){
-    self.disminuirIntensidad(evento.impacto())
+    super(evento)
     self.olvidarPrimerPalabrota()  
   }
 
@@ -83,10 +85,6 @@ class Alegria inherits Emocion{
   override method puedeLiberarse() = 
     intensidad > global.intensidadElevada 
      && (eventosVividos % 2 == 0)
-
-  override  method liberar(evento) {
-    self.disminuirIntensidad(evento.impacto())
-  }
 
   override method disminuirIntensidad(cant) {
     self.intensidad((self.intensidad() - cant).abs())
@@ -103,7 +101,7 @@ class Tristeza inherits Emocion{
      
 
   override  method liberar(evento) {
-    self.disminuirIntensidad(evento.impacto())
+    super(evento)
     causa = evento.descripcion() 
   }
 
@@ -113,11 +111,7 @@ class Desagrado inherits Emocion {
     override method puedeLiberarse() =
      intensidad > global.intensidadElevada
         && eventosVividos > intensidad
-    
-
-    override method liberar(evento) {
-        self.disminuirIntensidad(evento.impacto())
-    }
+        
 }
 
 class Temor inherits Desagrado {}
