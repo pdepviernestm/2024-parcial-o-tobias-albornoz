@@ -10,6 +10,8 @@ class Persona{
   const emociones = []
   method esAdolecente() = edad > 12 && edad <19
 
+  method emociones() = emociones
+
   method agregarEmocion(emocion) {
     emociones.add(emocion)
   }
@@ -22,7 +24,7 @@ class Persona{
     emociones.forEach({ emocion=>
       emocion.vivioEvento()
       if(emocion.puedeLiberarse()){
-        emocion.liberar()
+        emocion.liberar(evento)
       }
     })
   }
@@ -38,7 +40,14 @@ class Grupo {
     integrantes.add(integrante)
   }
 
+  method integrantes() = integrantes
+
   method vivirEvento(evento) {
+    if(integrantes.isEmpty()){
+      throw new DomainException(message= 
+        "No se puede afectar al gurpo por el evento, ya que no tiene participantes")
+    }
+
     integrantes.forEach({
       integrante => integrante.vivirEvento(evento)
     })
@@ -65,7 +74,7 @@ class Emocion {
   }
 
   method puedeLiberarse() = 
-    intensidad > global.intensidadElevada 
+    intensidad > global.intensidadElevada() 
   
   method liberar(evento) {
     self.disminuirIntensidad(evento.impacto())
