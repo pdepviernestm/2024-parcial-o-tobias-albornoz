@@ -108,3 +108,16 @@ class Tristeza inherits Emocion{
   }
 
 }
+
+class Desagrado inherits Emocion {
+    override method puedeLiberarse() =
+     intensidad > global.intensidadElevada
+        && eventosVividos > intensidad
+    
+
+    override method liberar(evento) {
+        self.disminuirIntensidad(evento.impacto())
+    }
+}
+
+class Temor inherits Desagrado {}
