@@ -5,7 +5,6 @@ object global {
 // --------------------------------------
 // Persona
 // --------------------------------------
-
 class Persona{
   const edad
   const emociones = []
@@ -30,6 +29,23 @@ class Persona{
 }
 
 // --------------------------------------
+// Grupos
+// --------------------------------------
+class Grupo {
+  const integrantes = []
+
+  method agregarIntegrante(integrante) {
+    integrantes.add(integrante)
+  }
+
+  method vivirEvento(evento) {
+    integrantes.forEach({
+      integrante => integrante.vivirEvento(evento)
+    })
+  }
+}
+
+// --------------------------------------
 // Eventos
 // --------------------------------------
 class Evento {
@@ -40,7 +56,6 @@ class Evento {
 // --------------------------------------
 // Emociones
 // --------------------------------------
-
 class Emocion {
   var property intensidad
   var eventosVividos = 0
@@ -49,7 +64,9 @@ class Emocion {
     eventosVividos += 1
   }
 
-  method puedeLiberarse() 
+  method puedeLiberarse() = 
+    intensidad > global.intensidadElevada 
+  
   method liberar(evento) {
     self.disminuirIntensidad(evento.impacto())
   }
@@ -70,9 +87,9 @@ class Furia inherits Emocion (intensidad = 100){
     
   }
 
-  override method puedeLiberarse() {
+  override method puedeLiberarse() =
     palabrotas.any({palabrota => palabrota.size() > 7})
-  }
+  
 
   override method liberar(evento){
     super(evento)
@@ -83,11 +100,10 @@ class Furia inherits Emocion (intensidad = 100){
 
 class Alegria inherits Emocion{
   override method puedeLiberarse() = 
-    intensidad > global.intensidadElevada 
-     && (eventosVividos % 2 == 0)
+    super() && (eventosVividos % 2 == 0)
 
   override method disminuirIntensidad(cant) {
-    self.intensidad((self.intensidad() - cant).abs())
+    super(cant).abs()
   }
 }
 
@@ -95,8 +111,7 @@ class Tristeza inherits Emocion{
   var causa = "melancolia"
 
   override method puedeLiberarse() =
-    intensidad > global.intensidadElevada 
-     && causa != "melancolia"
+    super() && causa != "melancolia"
      
   override  method liberar(evento) {
     super(evento)
@@ -107,8 +122,7 @@ class Tristeza inherits Emocion{
 
 class Desagrado inherits Emocion {
     override method puedeLiberarse() =
-     intensidad > global.intensidadElevada
-        && eventosVividos > intensidad
+      super() && eventosVividos > intensidad
 
 }
 
@@ -118,8 +132,7 @@ class Ansiedad inherits Emocion {
   var picosAnsiedad = 0 
 
   override method puedeLiberarse() =
-    intensidad > global.intensidadElevada 
-      && picosAnsiedad > 3
+    super() && picosAnsiedad > 3
 
   override method liberar(evento) {
     super(evento)
