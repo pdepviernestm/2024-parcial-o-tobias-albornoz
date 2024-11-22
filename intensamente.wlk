@@ -1,3 +1,7 @@
+object global {
+  var property intensidadElevada = 80
+}
+
 // --------------------------------------
 // Persona
 // --------------------------------------
@@ -15,7 +19,6 @@ class Persona{
     emociones.all({emocion => emocion.puedeLiberarse()})
   }
 
-  // vivir un evento
   method vivirEvento(evento) {
     emociones.forEach({ emocion=>
       emocion.vivioEvento()
@@ -24,15 +27,13 @@ class Persona{
       }
     })
   }
-
-
 }
 
 // --------------------------------------
 // Eventos
 // --------------------------------------
 class Evento {
-  const property descrippcion 
+  const property descripcion 
   const property impacto 
 }
 
@@ -41,7 +42,7 @@ class Evento {
 // --------------------------------------
 
 class Emocion {
-  var intensidad
+  var property intensidad
   var eventosVividos = 0
   method cuantosEventosExperimento() = eventosVividos
   method vivioEvento() {
@@ -57,7 +58,7 @@ class Emocion {
 
 }
 
-class Furia inherits Emocion{
+class Furia inherits Emocion (intensidad = 100){
   const palabrotas = []
 
   method aprenderPalabrota(palabrota) =
@@ -79,7 +80,17 @@ class Furia inherits Emocion{
 }
 
 class Alegria inherits Emocion{
+  override method puedeLiberarse() = 
+    intensidad > global.intensidadElevada 
+     && (eventosVividos % 2 == 0)
 
+  override  method liberar(evento) {
+    self.disminuirIntensidad(evento.impacto())
+  }
+
+  override method disminuirIntensidad(cant) {
+    self.intensidad((self.intensidad() - cant).abs())
+  }
 }
 
 class Tristeza inherits Emocion{
