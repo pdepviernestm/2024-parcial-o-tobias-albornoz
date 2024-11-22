@@ -94,12 +94,10 @@ class Alegria inherits Emocion{
 class Tristeza inherits Emocion{
   var causa = "melancolia"
 
-
   override method puedeLiberarse() =
     intensidad > global.intensidadElevada 
      && causa != "melancolia"
      
-
   override  method liberar(evento) {
     super(evento)
     causa = evento.descripcion() 
@@ -111,7 +109,25 @@ class Desagrado inherits Emocion {
     override method puedeLiberarse() =
      intensidad > global.intensidadElevada
         && eventosVividos > intensidad
-        
+
 }
 
 class Temor inherits Desagrado {}
+
+class Ansiedad inherits Emocion {
+  var picosAnsiedad = 0 
+
+  override method puedeLiberarse() =
+    intensidad > global.intensidadElevada 
+      && picosAnsiedad > 3
+
+  override method liberar(evento) {
+    super(evento)
+    picosAnsiedad += 1
+  }
+}
+
+/*
+La herencia nos permitio modelar caracteristicas comunes de las emociones por ejemplo la intencidad y la cantidad de eventos vividios evitando asi la repeticion de codigo
+El polimorfismo nos permitio implentar la logica especifica para cada emocion sin tener que alterar otras partes del codigo ya que sigen entendiendo los mismos mensaje pero comportandose de manera distinta cada uno
+*/
