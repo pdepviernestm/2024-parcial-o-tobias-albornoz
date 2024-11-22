@@ -1,0 +1,38 @@
+import intensamente.*
+
+describe "Tests Punto 6" {
+  
+  method crearGrupoPersonas() {
+    const tobias = new Persona(edad = 21)
+    const jeremias = new Persona(edad = 17)
+
+    const alegria = new Alegria(intensidad = 90)
+    const tristeza = new Tristeza(intensidad = 100, causa = "enganio")
+
+    jeremias.agregarEmocion(alegria)
+    tobias.agregarEmocion(tristeza)
+
+    const grupo = new Grupo()
+    grupo.agregarIntegrante(tobias)
+    grupo.agregarIntegrante(jeremias)
+
+    return grupo
+  }
+
+  test "Hacer que todos los integrantes de un grupo de personas vivan un mismo evento" {
+    const evento = new Evento(descripcion = "Terremoto", impacto = 30)
+    const grupo = self.crearGrupoPersonas()
+    
+    grupo.vivirEvento(evento)
+
+    const tobias = grupo.integrantes().get(0)
+    const jeremias = grupo.integrantes().get(1)
+
+    const tritezaTobias = tobias.emociones().first()
+    const alegriaJeremias = jeremias.emociones().first()
+    
+    assert.equals(70, tritezaTobias.intensidad()) 
+
+    assert.equals(90, alegriaJeremias.intensidad()) 
+  }
+}
